@@ -6,4 +6,4 @@ class Language(models.Model):
 
 class Framework(models.Model):
     name = models.CharField(max_length=10)
-    Language = models.ForeignKey(Language, on_delete=models.CASCADE)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE)
