@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
 from django.template.loader import get_template
+from django.urls import reverse
 from .utils import render_to_pdf
 from django.core.mail import send_mail
 import locale
@@ -51,12 +52,15 @@ def get_pdf_advanced(request):
     return response
 
 
+def emails(request):
+    if request.method == 'POST':
+        asunto = request.POST.get('subject', '')
+        mensaje = request.POST.get('message', '')
+        destinatario = request.POST.get('recipient', '')
+        send_mail(asunto, mensaje, 'mbvgjpv@gmail.com', [destinatario], fail_silently=False)
+        emails_url = reverse('emails')
+        return HttpResponse(f'Correo enviado correctamente. <br> <p><a href="{emails_url}">Volver al menú principal</a></p>')
+    return render(request, 'emails.html')
+
 def index(request):
-
-    send_mail('Hola',
-    'Prueba', 
-    'mbvgjpv@gmail.com',
-    ['mbvgjpv@gmail.com'],
-    fail_silently = False)
-
     return render(request, 'index.html')
