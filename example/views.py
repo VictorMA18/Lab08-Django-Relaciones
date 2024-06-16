@@ -5,6 +5,7 @@ from django.template.loader import get_template
 from django.urls import reverse
 from .utils import render_to_pdf
 from django.core.mail import send_mail
+from django.conf import settings
 import locale
 from . import utils
 # Create your views here.
@@ -57,7 +58,7 @@ def emails(request):
         asunto = request.POST.get('subject', '')
         mensaje = request.POST.get('message', '')
         destinatario = request.POST.get('recipient', '')
-        send_mail(asunto, mensaje, 'mbvgjpv@gmail.com', [destinatario], fail_silently=False)
+        send_mail(asunto, mensaje, settings.EMAIL_HOST_USER, [destinatario], fail_silently=False)
         emails_url = reverse('emails')
         return HttpResponse(f'Correo enviado correctamente. <br> <p><a href="{emails_url}">Volver al menú principal</a></p>')
     return render(request, 'emails.html')
